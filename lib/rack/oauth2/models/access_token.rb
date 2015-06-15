@@ -25,14 +25,15 @@ module Rack
 
         # Find AccessToken from token. Does not return revoked tokens.
         def self.from_token(token) # token == code??
-          first(:conditions => {:code => token, :revoked => nil})
+          # first(:conditions => {:code => token, :revoked => nil})
+          where(:code => code, :revoked => nil).first
         end
 
         # Get an access token (create new one if necessary).
         def self.get_token_for(identity, client, scope)
           raise ArgumentError, "Identity must be String or Integer" unless String === identity || Integer === identity
 
-          token = where({ :identity => identity, :scope => scope, 
+          token = where({ :identity => identity, :scope => scope,
             :client_id => client.id, :revoked => nil }).first
 
           token ||= begin
@@ -63,7 +64,7 @@ module Rack
           where(:client_id => client_id).offset(offset).limit(limit).order(:created_at)
         end
 
-        
+
           def self.historical(filter = {})
             days = filter[:days] || 60
          	  if filter.has_key?(:client_id)

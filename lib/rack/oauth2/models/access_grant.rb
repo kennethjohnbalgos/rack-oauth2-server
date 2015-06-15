@@ -9,7 +9,8 @@ module Rack
 
         # Find AccessGrant from authentication code.
         def self.from_code(code)
-          first(:conditions => {:code => code, :revoked => nil})
+          # first(:conditions => {:code => code, :revoked => nil})
+          where(:code => code, :revoked => nil).first
         end
 
         # Create a new access grant.
