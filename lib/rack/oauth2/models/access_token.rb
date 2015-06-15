@@ -26,7 +26,7 @@ module Rack
         # Find AccessToken from token. Does not return revoked tokens.
         def self.from_token(token) # token == code??
           # first(:conditions => {:code => token, :revoked => nil})
-          where(:code => code, :revoked => nil).first
+          where(:code => token, :revoked => nil).first
         end
 
         # Get an access token (create new one if necessary).
